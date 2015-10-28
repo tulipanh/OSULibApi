@@ -1,0 +1,11 @@
+URL/person/<id>:
+GET: Returns all basic information associated with a person (not reviews and not checkouts)
+POST: Unsupported
+PUT: Alters the information associated with a person (cannot alter email)
+DELETE: Removes a person from the database
+
+URL/person:
+GET: Returns first name, last name, and email of all Person entities in the database
+POST: Creates a new person entity in the database with the provided information
+PUT: Unsupported
+DELETE: Removes all person entities from the database
