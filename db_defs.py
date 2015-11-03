@@ -1,4 +1,5 @@
 from google.appengine.ext import ndb
+import datetime
 #May need to add password storage for the Android App later, but may also do that in a completely separate implementation, or may figure out how OAuth works with GAE and Google Play Services for Android
 
 #Status should be similar (perhaps identical) to Status for Copies (below), an integer that is interpreted by the API
@@ -23,7 +24,8 @@ class Author(ndb.Model):
 
 class HisEntry(ndb.Model):
 	email = ndb.StringProperty(required=True)
-	duedate = ndb.DateProperty(required=True)
+	chid = ndb.IntegerProperty(required=True)
+	startdate = ndb.DateProperty(required=True)
 
 #Status should be an intger that is interpreted by the API
 class Copy(ndb.Model):

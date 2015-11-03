@@ -1,0 +1,162 @@
+Base URL: libapi-1118.appspot.com
+The tests below are split into groups corresponding to each of the 12 URIs supported.
+HTTP requests are limited to GET, POST, PUT, and DELETE, though not all URIs support all four request types.
+The requests used to test the API are shown below starting withthe request verb in all capital letters.
+The query parameters follow in the form of a URL-encoded string.
+The lines following each request show the response from the server. 
+All tests were carried out using the Postman extension for Google Chrome.
+
+
+URI: /people
+GET	?
+[]
+POST ?fname=hunter&lname=tulipan&privilege=3&email=htulipan@gmail.com
+{"fname": "hunter", "email": "htulipan@gmail.com", "reviewables": [], "privilege": 3, "lname": "tulipan"}
+GET ?
+["htulipan@gmail.com"]
+PUT	?
+{"message": "That feature is unsupported at this time", "code": 500}
+DELETE ?
+<No Response>
+GET ?
+[]
+
+URI: /books
+GET ?
+[]
+POST ?title=newbooktitle&fname=authorfirstname&lname=authorlastname&edition=1&length=100000&genres=Horror,Fantasy,Fiction
+{"ID": 4644337115725824, "length": 100000, "title": "newbooktitle", "author": {"fname": "authorfirstname", "lname": "authorlastname"}, "genres": ["Horror", "Fantasy", "Fiction"], "edition": 1}
+GET ?
+[{"ID": 4644337115725824, "title": "newbooktitle"}]
+PUT ?
+{"message": "That feature is unsupported at this time.", "code": 500}
+DELETE ?
+<No Response>
+GET ?
+[]
+
+URI: /books/4644337115725824
+GET ?
+{"edition": 1, "title": "newbooktitle", "author": {"lname": "authorlastname", "fname": "authorfirstname"}, "genres": ["Horror", "Fantasy", "Fiction"], "length": 100000, "ID": 4644337115725824}
+POST ?
+{"code": 500, "message": "That feature is unsupported at this time."}
+PUT ?title=newtitle&fname=newauthorfirst&lname=newauthorlast&length=120000
+{"length": 120000, "edition": 1, "genres": ["Horror", "Fantasy", "Fiction"], "title": "newtitle", "ID": 4644337115725824, "author": {"lname": "newauthorlast", "fname": "newauthorfirst"}}
+DELETE ?
+<No Response>
+GET ?
+{"code": 500, "message": "That book is not in the system."}
+
+URI: /books/4644337115725824/copies
+GET ?
+[]
+POST ?
+{"status": 2, "hisEntries": [], "ID": 5770237022568448}
+GET ?
+[{"status": 2, "ID": 5770237022568448}]
+PUT ?
+{"code": 500, "message": "That feature is unsupported at this time."}
+DELETE ?
+<No Response>
+GET ?
+[]
+
+URI: /books/4644337115725824/copies/5770237022568448
+GET ?
+{"status": 2, "hisEntries": [], "ID": 5770237022568448}
+POST ?
+{"code": 500, "message": "That feature is unsupported at this time."}
+PUT ?status=0
+{"status": 0, "hisEntries": [], "ID": 5770237022568448}
+DELETE ?
+<No Response>
+GET ?
+{"code": 500, "message": "That copy is not in the system."}
+
+URI: /people/htulipan@gmail.com
+GET ?
+{"privilege": 3, "fname": "hunter", "email": "htulipan@gmail.com", "reviewables": [], "lname": "tulipan"}
+POST ?
+{"code": 300, "message": "That feature is unsupported at this time."}
+PUT ?fname=newfname
+{"privilege": 3, "fname": "newfname", "email": "htulipan@gmail.com", "reviewables": [], "lname": "tulipan"}
+DELETE ?
+<No Response>
+GET ?
+{"code": 500, "message": "That person is not in the system."}
+
+URI: /people/htulipan@gmail.com/checkouts
+GET ?
+[]
+POST ?bookid=4644337115725824&copyid=5770237022568448&length=30
+{"startdate": "2015-10-29", "duedate": "2015-11-28", "status": 1, "bookid": 4644337115725824, "ID": 5207287069147136, "copyid": 5770237022568448}
+GET ?
+[{"startdate": "2015-10-29", "duedate": "2015-11-28", "status": 1, "bookid": 4644337115725824, "ID": 5207287069147136, "copyid": 5770237022568448}]
+POST ?bookid=4644337115725824&copyid=5770237022568448&length=30
+{"code": 500, "message": "That copy is currently checked out."}
+PUT ?
+{"code": 300, "message": "That feature is unsupported at this time."}
+DELETE ?
+<No Response>
+GET ?
+[]
+POST ?bookid=4644337115725824&copyid=5770237022568448&length=30
+{"startdate": "2015-10-29", "duedate": "2015-11-28", "status": 1, "bookid": 4644337115725824, "ID": 6333186975989760, "copyid": 5770237022568448}
+
+URI: /people/htulipan@gmail.com/checkouts/6192449487634432
+GET ?
+{"copyid": 5066549580791808, "duedate": "2015-12-02", "ID": 6192449487634432, "startdate": "2015-11-02", "bookid": 5629499534213120, "status": 1}
+POST ?
+{"code": 500, "message": "That feature is unsupported at this time."}
+PUT ?length=10
+{"duedate": "2015-12-12", "status": 1, "ID": 6192449487634432, "copyid": 5066549580791808, "bookid": 5629499534213120, "startdate": "2015-11-02"}
+DELETE ?
+<No Response>
+GET ?
+{"code": 500, "message": "That checkout is not in the system."}
+
+URI: /people/htulipan@gmail.com/reviews
+GET ?
+[]
+POST ?bookid=5629499534213120&text=reviewtextstring
+{"title": "newtitle", "email": "htulipan@gmail.com", "ID": 4785074604081152, "text": "reviewtextstring", "bookid": 5629499534213120, "fname": "newname"}
+PUT ?
+{"code": 300, "message": "That feature is unsupported at this time."}
+DELETE ?
+<No Response>
+
+URI: /reviews/4785074604081152
+GET ?
+{"title": "newtitle", "email": "htulipan@gmail.com", "ID": 4785074604081152, "text": "reviewtextstring", "bookid": 5629499534213120, "fname": "newname"}
+POST ?
+{"code": 300, "message": "That feature is unsupported at this time."}
+PUT ?text=testingnewtextstring
+{"title": "newtitle", "email": "htulipan@gmail.com", "ID": 4785074604081152, "text": "testingnewtextstring", "bookid": 5629499534213120, "fname": "newname"}
+DELETE ?
+<No Response>
+GET ?
+{"code": 500, "message": "That review is not in the system."}
+
+URI: /books/5629499534213120/reviews
+GET ?
+[{"title": "newtitle", "email": "htulipan@gmail.com", "ID": 4785074604081152, "text": "testingnewtextstring", "bookid": 5629499534213120, "fname": "newname"}]
+POST ?
+{"code": 500, "message": "This feature is unsupported at this time."}
+PUT ?
+{"code": 500, "message": "This feature is unsupported at this time."}
+DELETE ?
+<No Response>
+GET ?
+[]
+
+URI: /books/5629499534213120/copies/5066549580791808/history
+GET ?
+[{"email": "htulipan@gmail.com", "chid": 6192449487634432, "startdate": "2015-11-02"}]
+POST ?
+{"code": 500, "message": "That feature is unsupported at this time."}
+PUT ?
+{"code": 500, "message": "That feature is unsupported at this time."}
+DELETE ?
+<No Response>
+GET ?
+[]
