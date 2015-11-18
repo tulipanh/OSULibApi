@@ -46,6 +46,16 @@ class people(webapp2.RequestHandler):
 						return
 				else:
 					newperson.privilege = 1
+				if self.request.get('recentLat'):
+					if goodInput(self, {'recentLat': 'float'}):
+						newperson.recentLat = float(self.request.get('recentLat'))
+					else:
+						return
+				if self.request.get('recentLong'):
+					if goodINput(self, {'recentLong': 'float'}):
+						newperson.recentLong = float(self.request.get('recentLong'))
+					else:
+						return
 				newperson.reviewables = []
 				result = newperson.to_dict()
 				result['email'] = newperson.key.id()
@@ -74,7 +84,7 @@ class people(webapp2.RequestHandler):
 
 class person(webapp2.RequestHandler):
 	def get(self, email):
-		#Should return a JSON object containing the information of the person specified by the 
+		#Should return a JSON object containing the information of the person specified by the email
 		person = getPerson(self, email)
 		if person:
 			result = person.to_dict()
@@ -100,6 +110,14 @@ class person(webapp2.RequestHandler):
 				if not goodInput(self, {'privilege': 'int'}):
 					return
 				person.privilege = int(self.request.get('privilege'))
+			if self.request.get('recentLat'):
+				if not goodInput(self, {'recentLat': 'float'}):
+					return
+				person.recentLat = float(self.request.get('recentLat'))
+			if self.request.get('recentLong'):
+				if not goodInput(self, {'recentLong': 'float'}):
+					return
+				person.recentLong = float(self.request.get('recentLong'))
 			if self.request.get('email'):
 				errorMessage(self, 500, 'Cannot change email.')
 			result = person.to_dict()
@@ -694,6 +712,14 @@ def goodInput(handler, inputdict):
 			except:
 				errorMessage(handler, 500, "Expected integer for input - %s" % key)
 				return False
+		elif inputdict[key] == 'float':
+			try:
+				testfloat = float(handler.request.get(key))
+			except:
+				errorMessage(handler, 500, "Expected float for input - %s" % key)
+				return False
+		#Should maybe differetiate between names and general strings
+		#Restrict to a subset of characters, or perhaps more reasonably exclude a subset
 		elif inputdict[key] == 'str':
 			try:
 				teststr = str(handler.request.get(key))
@@ -715,6 +741,7 @@ def goodInput(handler, inputdict):
 
 		#elif inputdict[key] == 'email':
 		#Email is hard to check for validity
+		#Ultimately the only sure-fire way is to send an email for verification
 	return True
 
 def getPerson(handler, email):

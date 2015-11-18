@@ -40,6 +40,8 @@ class Person(ndb.Model):
 	fname = ndb.StringProperty(required=True)
 	lname = ndb.StringProperty(required=True)
 	privilege = ndb.IntegerProperty(required=True)
+	recentLat = ndb.FloatProperty()
+	recentLong	= ndb.FloatProperty()
 	reviewables = ndb.IntegerProperty(repeated=True)
 
 #Should have Copies and Reviews as child entities
